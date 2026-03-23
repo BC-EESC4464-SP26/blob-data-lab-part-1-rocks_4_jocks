@@ -73,10 +73,13 @@ datetick('x', 'dd-mmm-yyyy')
 
 % -->
 
+movingmean = movmean(timeFixed, 24*4);
 
 
 % 4b. Use the movstd function to calculate the 1-day moving standard
 % deviation of the data.
+
+movingstd = movstd(timeFixeed, 24*4);
 
 %% 5. Honing your initial investigation plot
 % Building on the initial plot you made in #3 above, now add:

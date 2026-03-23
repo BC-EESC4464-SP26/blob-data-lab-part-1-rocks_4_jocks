@@ -73,18 +73,45 @@ datetick('x', 'dd-mmm-yyyy')
 
 % -->
 
+movingmean = movmean(temperature, (24*60)/15);
 
 
 % 4b. Use the movstd function to calculate the 1-day moving standard
 % deviation of the data.
 
+movingstd = movstd(temperature, (24*60)/15);
+
 %% 5. Honing your initial investigation plot
 % Building on the initial plot you made in #3 above, now add:
 %5a. A plot of the 1-day moving mean on the same plot as the original raw data
 
+subplot(2,1,1)
+
+plot(timeFixed, temperature, '.', 'DisplayName', 'Raw Data')
+hold on
+plot(timeFixed, movingmean, 'r', 'LineWidth', 2, 'DisplayName', '1-day Moving Mean')
+
+ylabel('Temperature (°C)')
+title('Temperature vs Time with 1-Day Moving Mean')
+legend
+
+datetick('x', 'dd-mmm-yyyy')
+grid on
+
 %5b. A plot of the 1-day moving standard deviation, on a separate plot
 %underneath, but with the same x-axis (hint: you can put two plots in the
 %same figure by using "subplot" and you can specify
+
+subplot(2,1,2)
+
+plot(timeFixed, movingstd, 'k', 'LineWidth', 1.5)
+
+ylabel('Std Dev (°C)')
+xlabel('Time')
+title('1-Day Moving Standard Deviation')
+
+datetick('x', 'dd-mmm-yyyy')
+grid on
 
 %% 6. Identifying data to exclude from analysis
 % Based on the plot above, you can see that there are time periods when the
