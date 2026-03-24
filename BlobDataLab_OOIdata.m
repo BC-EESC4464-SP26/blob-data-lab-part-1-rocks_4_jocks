@@ -125,7 +125,7 @@ grid on
 %from your analysis. Note that you will need to justify this choice in the
 %methods section of your writeup for this lab.
 
-std_cutoff= 0.25; % Chose it because there was a lot of noise in the data, 
+std_cutoff= 0.25; % Chose it because there was a lot of noise in the data above this threshold 
 
 %6b. Find the indices of the data points that you are not excluding based
 %on the cutoff chosen in 6a.
