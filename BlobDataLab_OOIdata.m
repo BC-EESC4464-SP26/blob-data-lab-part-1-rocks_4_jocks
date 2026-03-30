@@ -1,7 +1,7 @@
 %% 1. Explore and extract data from one year of OOI mooring data
 
-%addpath(genpath('C:\Users\nuhin\git\blob-data-lab-part-1-rocks_4_jocks\OOI_StationPapa_FLMB_CTDdata_BlobDataLab'))
-addpath(genpath('/Users/ilanajacobs/Palevsky_Lab/Classes/EESC6664/blob-data-lab-part-1-rocks_4_jocks/BlobDataLab_OOIdata.m'))
+addpath(genpath('C:\Users\nuhin\git\blob-data-lab-part-1-rocks_4_jocks\OOI_StationPapa_FLMB_CTDdata_BlobDataLab'))
+%addpath(genpath('/Users/ilanajacobs/Palevsky_Lab/Classes/EESC6664/blob-data-lab-part-1-rocks_4_jocks/BlobDataLab_OOIdata.m'))
 
 filename = 'deployment0001_GP03FLMB.nc';
 %1a. Use the function "ncdisp" to display information about the data contained in this file
