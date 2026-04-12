@@ -125,7 +125,7 @@ grid on
 %from your analysis. Note that you will need to justify this choice in the
 %methods section of your writeup for this lab.
 
-std_cutoff= 0.25; % Chose it because there was a lot of noise in the data, 
+std_cutoff= 0.25; % Chose it because there was a lot of noise in the data above this threshold 
 
 %6b. Find the indices of the data points that you are not excluding based
 %on the cutoff chosen in 6a.
@@ -189,32 +189,32 @@ for i = 1:length(filenames)
     time        = ncread(filename, 'time');
     temperature = ncread(filename, 'ctdmo_seawater_temperature');
 
-% Convert Times
+    % Convert Times
 
-time0     = datenum('1900-01-01');
+    time0     = datenum('1900-01-01');
     timeFixed = time0 + time / (60*60*24);
 
-     timeResMinutes = median(diff(timeFixed)) * 60 * 24;
-    windowSize     = round((24 * 60) / timeResMinutes); % samples per 24 hrs
+    timeResolution = diff(timeFixed) * (60 * 24);
 
-    movingMean = movmean(temperature, windowSize);
-    movingStd  = movstd(temperature,  windowSize);
+    movingMean = movmean(temperature, (24*60)/15);
+    movingStd = movstd(temperature, (24*60)/15);
 
     good_idx = find(movingStd <= std_cutoff);
 
-    
+    % Store data
     allData(i).deploymentNum = depNum;
-    allData(i).filename      = filename;
-    allData(i).lat           = lat;
-    allData(i).lon           = lon;
-    allData(i).time          = timeFixed;
-    allData(i).temperature   = temperature;
-    allData(i).movingMean    = movingMean;
-    allData(i).movingStd    = movingStd;
-    allData(i).good_idx      = good_idx;
-    allData(i).timeResMin    = timeResMinutes;
+    allData(i).filename = filename;
+    allData(i).lat = lat;
+    allData(i).lon = lon;
+    allData(i).time = timeFixed;
+    allData(i).temperature = temperature;
+    allData(i).movingMean = movingMean;
+    allData(i).movingStd = movingStd;
+    allData(i).good_idx = good_idx;
+    allData(i).timeResolution= timeResolution;
 
 
+    % Plots 
 figure('Name', sprintf('Deployment %04d', depNum), 'NumberTitle', 'off')
 
     subplot(2,1,1)
@@ -243,3 +243,24 @@ figure('Name', sprintf('Deployment %04d', depNum), 'NumberTitle', 'off')
     grid on
 
 end
+
+%%
+[~, feb2020_idx] = min(abs(timeFixed - datenum(2020, 2, 1)));
+
+% Extract the 2D sstAnom slice for February 2020
+sstAnom_feb2020 = squeeze(ncread(filename, 'sstAnom', [1, 1, feb2020_idx], [Inf, Inf, 1]));
+
+% Quick check with imagesc
+figure
+imagesc(lon_sat, lat_sat, sstAnom_feb2020')
+colorbar
+title('Quick check: SSTanom February 2020')
+
+% Polished map using Mapping Toolbox
+figure
+worldmap([20 60], [-170 -100])
+pcolorm(double(lat_sat), double(lon_sat), double(sstAnom_feb2020)')
+colorbar
+colormap(cmocean(balance))   % diverging colormap suits anomaly data
+caxis([-3 3])
+title('Sea Surface Temperature Anomaly - February 2020')
